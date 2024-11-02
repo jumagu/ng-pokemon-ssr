@@ -1,0 +1,16 @@
+<div
+  role="status"
+  aria-busy="true"
+  aria-label="Loading pokemons"
+  class="grid sm:grid-cols-2 md:grid-cols-3 gap-4"
+>
+  @for (_ of '123456789'.split(''); track $index) {
+  <div
+    class="bg-white h-44 bg-opacity-25 rounded-lg shadow-md flex flex-col p-4 items-center justify-center"
+    aria-hidden="true"
+  >
+    <div class="w-24 h-24 bg-gray-300 rounded-full animate-pulse"></div>
+    <span class="w-20 h-3 rounded bg-gray-300 animate-pulse mt-2"></span>
+  </div>
+  }
+</div>
