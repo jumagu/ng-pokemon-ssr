@@ -1,9 +1,28 @@
-<h1 class="text-3xl">List of Pokemons</h1>
-<span class="">Current page: </span>
+<h1 class="text-3xl mb-4">List of Pokemons</h1>
 
-<pokemon-list />
+@if (isLoading() && !pokemons().length) {
+<pokemon-list-skeleton />
+} @else if (!isLoading() && !pokemons().length){
+<div>
+  <span>There are no results for this page.</span>
+</div>
+} @else {
+<pokemon-list [pokemons]="pokemons()" />
+}
 
-<nav class="mt-4 flex justify-center">
-  <button class="btn-primary w-28 mr-4">Previous</button>
-  <button class="btn-primary w-28">Next</button>
+<nav class="mt-4 flex justify-center" aria-label="Pagination links">
+  <a
+    [routerLink]="[]"
+    [queryParams]="{ page: currentPage()! - 1 }"
+    class="btn-primary w-28 mr-4 text-center cursor-pointer"
+    [ariaDisabled]="currentPage()! <= 1 || isLoading()"
+    >Previous</a
+  >
+  <a
+    [routerLink]="[]"
+    [queryParams]="{ page: currentPage()! + 1 }"
+    class="btn-primary w-28 text-center cursor-pointer"
+    [ariaDisabled]="pokemons().length < 20 || isLoading()"
+    >Next</a
+  >
 </nav>
