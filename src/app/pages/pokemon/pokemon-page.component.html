@@ -1,0 +1,38 @@
+<div
+  class="min-h-[calc(100dvh-80px)] flex flex-col items-center justify-center gap-4"
+>
+  @if(pokemon()) {
+  <h1 class="text-4xl font-semibold capitalize">
+    {{ pokemon()?.name }}
+  </h1>
+  <section>
+    <img
+      [src]="pokemon()?.sprites?.other?.['official-artwork']?.front_default"
+      [alt]="pokemon()?.name"
+      class="w-64 h-64 mx-auto mt-2"
+    />
+  </section>
+  <section>
+    <h2 class="sr-only">Cries</h2>
+    @if (pokemon()?.cries?.latest) {
+    <audio controls class="mx-auto">
+      <source [src]="pokemon()?.cries?.latest" type="audio/ogg" />
+    </audio>
+    } @else {
+    <span>No cries avalibele</span>
+    }
+  </section>
+  <section>
+    <h2 class="text-xl text-center font-semibold">Abilities</h2>
+    <div class="flex mt-2 gap-2">
+      @for (ability of pokemon()?.abilities; track ability.ability.name) {
+      <span class="bg-violet-600 py-2 px-4 rounded-full">
+        {{ ability.ability.name }}
+      </span>
+      }
+    </div>
+  </section>
+  } @else {
+  <span class="text-2xl" role="status" aria-busy="true">Loading...</span>
+  }
+</div>
