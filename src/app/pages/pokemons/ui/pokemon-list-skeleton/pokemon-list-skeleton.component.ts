@@ -6,4 +6,6 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
   templateUrl: './pokemon-list-skeleton.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class PokemonListSkeletonComponent {}
+export class PokemonListSkeletonComponent {
+  public items = Array.from({ length: 20 });
+}
