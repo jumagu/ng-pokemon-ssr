@@ -12,15 +12,13 @@
 
 <nav class="mt-4 flex justify-center" aria-label="Pagination links">
   <a
-    [routerLink]="[]"
-    [queryParams]="{ page: currentPage() - 1 }"
+    [routerLink]="['/pokemons/page', currentPage() - 1]"
     class="btn-primary w-28 mr-4 text-center cursor-pointer"
     [ariaDisabled]="currentPage() <= 1 || isLoading()"
     >Previous</a
   >
   <a
-    [routerLink]="[]"
-    [queryParams]="{ page: currentPage() + 1 }"
+    [routerLink]="['/pokemons/page', currentPage() + 1]"
     class="btn-primary w-28 text-center cursor-pointer"
     [ariaDisabled]="pokemons().length < 20 || isLoading()"
     >Next</a

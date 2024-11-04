@@ -31,7 +31,7 @@ export default class PokemonsPageComponent implements OnDestroy {
   public isLoading = signal(true);
   public pokemons = signal<SimplePokemon[]>([]);
 
-  public queryParamSubscription = this.route.queryParamMap
+  public queryParamSubscription = this.route.paramMap
     .pipe(
       map((params) => params.get('page') ?? '1'),
       map((page) => (isNaN(+page) ? 1 : +page)),
