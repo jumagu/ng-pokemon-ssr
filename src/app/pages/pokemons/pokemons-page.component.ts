@@ -1,12 +1,10 @@
 import { Title } from '@angular/platform-browser';
-import { toSignal } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import {
   inject,
-  OnInit,
-  effect,
   signal,
   Component,
+  OnDestroy,
   ChangeDetectionStrategy,
 } from '@angular/core';
 
@@ -24,29 +22,28 @@ import { PokemonListSkeletonComponent } from './ui/pokemon-list-skeleton/pokemon
   templateUrl: './pokemons-page.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export default class PokemonsPageComponent implements OnInit {
+export default class PokemonsPageComponent implements OnDestroy {
   private title = inject(Title);
   private route = inject(ActivatedRoute);
   private pokemonsService = inject(PokemonsService);
+
+  public currentPage = signal(1);
   public isLoading = signal(true);
   public pokemons = signal<SimplePokemon[]>([]);
-  public currentPage = toSignal<number>(
-    this.route.queryParamMap.pipe(
+
+  public queryParamSubscription = this.route.queryParamMap
+    .pipe(
       map((params) => params.get('page') ?? '1'),
       map((page) => (isNaN(+page) ? 1 : +page)),
       map((page) => Math.max(1, page))
     )
-  );
+    .subscribe((page) => {
+      this.currentPage.set(page);
+      this.loadPokemons(page);
+    });
 
-  public pokemonEffect = effect(
-    () => {
-      this.loadPokemons(this.currentPage());
-    },
-    { allowSignalWrites: true }
-  );
-
-  ngOnInit(): void {
-    this.loadPokemons(this.currentPage());
+  ngOnDestroy(): void {
+    this.queryParamSubscription.unsubscribe();
   }
 
   public loadPokemons(page = 0) {
