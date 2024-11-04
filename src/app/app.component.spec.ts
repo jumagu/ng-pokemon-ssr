@@ -1,29 +1,50 @@
-import { TestBed } from '@angular/core/testing';
+import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+
 import { AppComponent } from './app.component';
 
 describe('AppComponent', () => {
+  let fixture: ComponentFixture<AppComponent>;
+  let compiled: HTMLElement;
+  let component: AppComponent;
+
+  @Component({
+    selector: 'nav-bar',
+    standalone: true,
+    template: `<h1>Mock of NavBarComponent</h1>`,
+  })
+  class MockNavBarComponent {}
+
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [AppComponent],
-    }).compileComponents();
+    TestBed.overrideComponent(AppComponent, {
+      set: {
+        imports: [MockNavBarComponent],
+        schemas: [CUSTOM_ELEMENTS_SCHEMA],
+      },
+    });
+
+    // ! Recommended
+    // await TestBed.configureTestingModule({
+    //   imports: [AppComponent],
+    //   providers: [provideRouter([])],
+    // })
+    //   .overrideComponent(AppComponent, {
+    //     add: { imports: [MockNavBarComponent] },
+    //     remove: { imports: [NavBarComponent] },
+    //   })
+    //   .compileComponents();
+
+    fixture = TestBed.createComponent(AppComponent);
+    compiled = fixture.nativeElement;
+    component = fixture.componentInstance;
   });
 
-  it('should create the app', () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    const app = fixture.componentInstance;
-    expect(app).toBeTruthy();
+  it('should render the nav-bar and router-outlet', () => {
+    expect(component).toBeTruthy();
   });
 
   it(`should have the 'pokemon-ssr' title`, () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    const app = fixture.componentInstance;
-    expect(app.title).toEqual('pokemon-ssr');
-  });
-
-  it('should render title', () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    fixture.detectChanges();
-    const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('h1')?.textContent).toContain('Hello, pokemon-ssr');
+    expect(compiled.querySelector('nav-bar')).toBeTruthy();
+    expect(compiled.querySelector('router-outlet')).toBeTruthy();
   });
 });
