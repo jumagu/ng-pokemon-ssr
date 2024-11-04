@@ -3,7 +3,7 @@
 >
   <img class="w-24 h-24" [src]="pokemonImg()" [alt]="pokemon().name" />
   <a
-    [routerLink]="['/pokemons', pokemon().id]"
+    [routerLink]="['/pokemons', pokemon().name]"
     class="mt-2 text-xl font-bold capitalize hover:text-orange-500 transition-colors duration-200 before:absolute before:top-0 before:left-0 before:content-[''] before:h-full before:w-full before:z-[1]"
     >{{ pokemon().name }}</a
   >
